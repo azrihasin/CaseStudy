@@ -21,9 +21,9 @@ export default function App() {
 
   //INITIALIZE PARCEL STORAGE
 
-  var parcel = []
+  let parcel = []
 
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     parcel.push({
       id: i,
       parcelStored: 0,
@@ -63,17 +63,20 @@ export default function App() {
 
   const addParcel = () => {
     let updatedData = data.map((item) => {
+      if(item.id == number - 1) {
+        if(item.parcelStored < 5) {
+          const newParcel = { name: text, houseNumber: number, date: new Date().toString() }
+          item.subStorage.push(newParcel)
 
-  
-      if (item.id == 0) {
-         const newParcel = { name: text, houseNumber: number }
+          var count = item.parcelStored
+          return { ...item, parcelStored: count + 1}  
+        }
 
-        item.subStorage.push(newParcel)
-
-
-        var count = item.parcelStored
-        return { ...item, parcelStored: count + 1}
+        else {
+          Alert.alert('The storage slot is full. Parcel cannot be added.')
+        }
       }
+      
       return item // else return unmodified item
     })
 
@@ -84,8 +87,6 @@ export default function App() {
   //WHEN FLAT LIST CLICKED OPEN ALERT MENU
 
   const openStorage = (id) => {
-   
-
     setDisplayParcel(data[parseInt(id)])
     setModalVisible(true)
   }
@@ -105,6 +106,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Enter parcel details here:</Text>
       <TextInput
         style={styles.input}
         onChangeText={(val) => setText(val)}
@@ -132,7 +134,7 @@ export default function App() {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => openStorage(item.id)}>
             <View style={styles.row}>
-              <Text>Storage {item.id}</Text>
+              <Text>Storage {item.id + 1}</Text>
               <Text>{item.parcelStored}/5</Text>
             </View>
           </TouchableOpacity>
@@ -151,7 +153,10 @@ export default function App() {
           <View style={styles.modalView}>
             { displayParcel!=null ? displayParcel.subStorage.map(function (item,index) {
               return (
-               <Text key={index}>Name:{item.name} HouseNumber :{item.houseNumber}</Text>
+                <View style={styles.displayParcel}>
+                  <Text style={styles.header}>Parcel #{index + 1}</Text>
+                  <Text key={index}>Name: {item.name}{"\n"}House Number: {item.houseNumber}{"\n"}Date: {item.date}</Text>  
+                </View>
               )
             }): <Text>Storage Empty</Text>}
 
@@ -164,7 +169,6 @@ export default function App() {
           </View>
         </View>
       </Modal>
-      <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
   )
@@ -178,6 +182,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 50,
   },
+
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+
   input: {
     height: 40,
     width: 300,
@@ -185,6 +195,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+
   row: {
     flex: 1,
     paddingVertical: 25,
@@ -194,6 +205,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     margin: 10,
   },
+
   button: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -204,6 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     margin: 5,
   },
+
   text: {
     fontSize: 16,
     lineHeight: 21,
@@ -211,21 +224,25 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
+
   containerLoading: {
     flex: 1,
     justifyContent: 'center',
   },
+
   horizontal: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10,
   },
+
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
   },
+
   modalView: {
     margin: 20,
     backgroundColor: 'white',
@@ -237,22 +254,30 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },
 
+  displayParcel: {
+    marginBottom: 20,
+  },
+
   buttonOpen: {
     backgroundColor: '#F194FF',
   },
+
   buttonClose: {
     backgroundColor: '#2196F3',
   },
+
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
+
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
