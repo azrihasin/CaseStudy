@@ -50,9 +50,19 @@ export default function App() {
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('storage')
-
       if (jsonValue != null) {
-        setData(JSON.parse(jsonValue))
+        const converted = JSON.parse(jsonValue);
+        for (let i = 0; i < converted .length; i++) {
+          for (let j = 0; j < converted [i].subStorage.length; j++) {
+            const parcelCreatedAt = new Date(converted[i].subStorage[j].date);
+            if ((Date.now() - parcelCreatedAt.getTime()) > 1000 * 60 * 60 * 24 * 2) {
+              converted[i].subStorage.splice(j, 1);
+              converted[i].parcelStored -= 1;
+            }
+          }
+        }
+        storeData(converted);
+        setData(converted);
       }
     } catch (e) {
       // error reading value
@@ -63,20 +73,20 @@ export default function App() {
 
   const addParcel = () => {
     let updatedData = data.map((item) => {
-      if(item.id == number - 1) {
-        if(item.parcelStored < 5) {
+      if (item.id == number - 1) {
+        if (item.parcelStored < 5) {
           const newParcel = { name: text, houseNumber: number, date: new Date().toString() }
           item.subStorage.push(newParcel)
 
           var count = item.parcelStored
-          return { ...item, parcelStored: count + 1}  
+          return { ...item, parcelStored: count + 1 }
         }
 
         else {
           Alert.alert('The storage slot is full. Parcel cannot be added.')
         }
       }
-      
+
       return item // else return unmodified item
     })
 
@@ -151,14 +161,14 @@ export default function App() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            { displayParcel!=null ? displayParcel.subStorage.map(function (item,index) {
+            {displayParcel != null ? displayParcel.subStorage.map(function (item, index) {
               return (
                 <View style={styles.displayParcel}>
                   <Text style={styles.header}>Parcel #{index + 1}</Text>
-                  <Text key={index}>Name: {item.name}{"\n"}House Number: {item.houseNumber}{"\n"}Date: {item.date}</Text>  
+                  <Text key={index}>Name: {item.name}{"\n"}House Number: {item.houseNumber}{"\n"}Date: {item.date}</Text>
                 </View>
               )
-            }): <Text>Storage Empty</Text>}
+            }) : <Text>Storage Empty</Text>}
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -182,12 +192,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 50,
   },
-
   header: {
     fontSize: 24,
     fontWeight: 'bold',
   },
-
   input: {
     height: 40,
     width: 300,
