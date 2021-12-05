@@ -3,16 +3,16 @@ Mobile App Case Study Group C
 
 # Group members details
 
-1.Muhammad Azri bin Hasin 1813785
-2.Muhammad Hammizie bin Zamri 1812129
-3.Muhammad Syahmi Aiman bin Mohd Shahrin 1811893
-4.Chairiandita Sheilla 1810502
+1. Muhammad Azri bin Hasin 1813785
+2. Muhammad Hammizie bin Zamri 1812129
+3. Muhammad Syahmi Aiman bin Mohd Shahrin 1811893
+4. Chairiandita Sheilla 1810502
 
 # Assigned Task
-useState, useEffect,some UI - azri
-add parcel&modal - syahmi
-local storage, date time - hammizie
-openStorage& resetStorage function - sheilla
+- useState, useEffect,some UI (azri)
+- add parcel&modal (syahmi)
+- local storage, date time (hammizie)
+- openStorage& resetStorage function (sheilla)
 
 # Brief Description
 
